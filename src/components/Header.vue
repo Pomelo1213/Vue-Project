@@ -1,5 +1,9 @@
 <template>
-  <div class="header">i am header</div>
+  <div class="header">
+    <section class="top-part">
+      hhahah
+    </section>
+  </div>
 </template>
 
 <script>
