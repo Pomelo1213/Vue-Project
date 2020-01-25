@@ -2,20 +2,15 @@
 
 > Vue project
 
-## Build Setup
+## NOTE
 
-``` bash
-# install dependencies
-npm install
+【原因】项目本身存在一个 mock 的 data.json 文件，但是需要去配置本地路由来使用
 
-# serve with hot reload at localhost:8080
-npm run dev
+【步骤】
 
-# build for production with minification
-npm run build
+- 首先进行 `yarn` 或者 `npm install` 安装依赖
+- 然后去 `node_modules` 里面找到 `webpack-dev-server` 的包，在包里找到 `Server.js`
+- 然后配置里面的 `express` 的路由，将我们的 json 文件单独用作一个本地路由请求的返回值
+- 这样以来就可以通过路由来获取我们的 mock 数据
 
-# build for production and view the bundle analyzer report
-npm run build --report
-```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+这里没有使用其他的 mock 方式，后面可以进行优化，目前可以使用就好了。
