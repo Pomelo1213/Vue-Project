@@ -9,10 +9,31 @@
 }
 
 .h-lh(@h) {
+  .h-lh(@h, @h);
+}
+
+.h-lh(@h, @lh) {
   height: @h;
-  line-height: @h;
+  line-height: @lh;
 }
 
 .border(@color) {
   border: 1px solid @color;
+}
+
+.size(@size) {
+  .size(@size, @size);
+}
+
+.size(@width, @height) {
+  width: @width;
+  height: @height;
+}
+
+.bg-image(@url) {
+  background-image: url("@{url}@2x.png");
+  background-repeat: no-repeat;
+  @media (-webkit-min-device-pixel-ratio: 3), (device-pixel-ratio: 3) {
+    background-image: url("@{url}@3x.png");
+  }
 }
