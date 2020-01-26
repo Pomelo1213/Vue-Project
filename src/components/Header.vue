@@ -21,22 +21,40 @@
           </span>
         </div>
       </div>
+      <div
+        class="detail-btn"
+        v-if="seller.supports"
+        @click="handleCheckSellerDetailClick"
+      >
+        <span class="length">{{ seller.supports.length }}个</span>
+        <span class="arrow icon-keyboard_arrow_right"></span>
+      </div>
     </section>
-    <section class="bottom-part">
+    <section class="bottom-part" @click="handleCheckSellerDetailClick">
       <span class="bulletin-brand"></span>
       <p class="bulletin">
         {{ seller.bulletin }}
       </p>
+      <span class="arrow icon-keyboard_arrow_right"></span>
+    </section>
+    <section class="seller-detail-info" v-if="showSellerInfo">
+      <div class="title">{{ seller.name }}</div>
+      <v-star :classType="36" :score="2.6"></v-star>
+      <span class="close-btn icon-close"></span>
     </section>
   </div>
 </template>
 
 <script>
+import Star from "./Star.vue";
 export default {
   props: {
     seller: {
       type: Object
     }
+  },
+  components: {
+    "v-star": Star
   },
   created: function() {
     this.activityClassMp = [
@@ -46,6 +64,16 @@ export default {
       "invoice",
       "guarantee"
     ];
+  },
+  data: function() {
+    return {
+      showSellerInfo: false
+    };
+  },
+  methods: {
+    handleCheckSellerDetailClick: function() {
+      this.showSellerInfo = true;
+    }
   }
 };
 </script>
@@ -53,7 +81,6 @@ export default {
 <style lang="less" scoped>
 @import "../assets/global.less";
 .header {
-  border: 1px solid;
   position: relative;
   background-color: rgba(7, 17, 27, 0.5);
 
@@ -68,7 +95,8 @@ export default {
 
   .top-part {
     .flex();
-    padding: 24px 0 18px 24px;
+    padding: 24px 12px 18px 24px;
+    position: relative;
 
     .seller-avatar {
       margin-right: 16px;
@@ -136,6 +164,28 @@ export default {
         }
       }
     }
+
+    .detail-btn {
+      position: absolute;
+      right: 12px;
+      bottom: 11px;
+      background-color: rgba(0, 0, 0, 0.2);
+      padding: 7px 8px;
+      padding-left: 16px;
+      border-radius: 16px;
+      .cursor();
+
+      .length {
+        font-size: 10px;
+        color: @whiteColor;
+        .h-lh(12px);
+      }
+
+      .arrow {
+        .size(20px);
+        color: @whiteColor;
+      }
+    }
   }
 
   .bottom-part {
@@ -144,6 +194,7 @@ export default {
     padding-right: 12px;
     background-color: rgba(7, 17, 27, 0.2);
     padding-right: 12px;
+    position: relative;
     .flex();
 
     .bulletin-brand {
@@ -163,6 +214,39 @@ export default {
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
+    }
+
+    .arrow {
+      position: absolute;
+      color: @whiteColor;
+      font-size: 12px;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+
+  .seller-detail-info {
+    position: fixed;
+    left: 0;
+    top: 0;
+    .size(100%);
+    background: rgba(7, 17, 27, 0.8);
+    padding-bottom: 64px;
+    overflow: hidden;
+
+    .title {
+      color: @whiteColor;
+    }
+
+    .close-btn {
+      color: @whiteColor;
+      font-size: 32px;
+      z-index: 1;
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
     }
   }
 }
