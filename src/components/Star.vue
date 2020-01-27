@@ -48,9 +48,15 @@ export default {
 .star-wrap {
   .star-item {
     display: inline-block;
+    &:last-child {
+      margin-right: 0;
+    }
   }
 
   &.star24 {
+    .star-item {
+      margin-right: 3px;
+    }
     .star-on {
       .size(10px);
       .bg-image("../res/star/star24_on");
@@ -68,6 +74,9 @@ export default {
     }
   }
   &.star36 {
+    .star-item {
+      margin-right: 6px;
+    }
     .star-on {
       .size(15px);
       .bg-image("../res/star/star36_on");
@@ -85,6 +94,9 @@ export default {
     }
   }
   &.star48 {
+    .star-item {
+      margin-right: 22px;
+    }
     .star-on {
       .size(20px);
       .bg-image("../res/star/star48_on");

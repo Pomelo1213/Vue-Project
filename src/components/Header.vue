@@ -37,11 +37,52 @@
       </p>
       <span class="arrow icon-keyboard_arrow_right"></span>
     </section>
-    <section class="seller-detail-info" v-if="showSellerInfo">
-      <div class="title">{{ seller.name }}</div>
-      <v-star :classType="36" :score="2.6"></v-star>
-      <span class="close-btn icon-close"></span>
-    </section>
+    <transition name="fade">
+      <section class="seller-detail-info" v-if="showSellerInfo">
+        <div class="info-wrap">
+          <p class="title">{{ seller.name }}</p>
+          <div class="star-view-wrap">
+            <v-star :classType="48" :score="seller.score"></v-star>
+          </div>
+          <div class="part part-1">
+            <div class="title">
+              <div class="line"></div>
+              <div class="text">优惠信息</div>
+              <div class="line"></div>
+            </div>
+            <ul class="content ul-content" v-if="seller.supports">
+              <li
+                class="li-content"
+                v-for="(item, index) in seller.supports"
+                :key="index"
+              >
+                <span
+                  class="activity-brand"
+                  :class="activityClassMp[seller.supports[index].type]"
+                ></span>
+                <span class="description">{{
+                  seller.supports[index].description
+                }}</span>
+              </li>
+            </ul>
+          </div>
+          <div class="part part-2">
+            <div class="title">
+              <div class="line"></div>
+              <div class="text">商家公告</div>
+              <div class="line"></div>
+            </div>
+            <div class="content bulletin">{{ seller.bulletin }}</div>
+          </div>
+        </div>
+        <div class="close-wrap">
+          <span
+            class="close-btn icon-close"
+            @click="handleCloseBtnClick"
+          ></span>
+        </div>
+      </section>
+    </transition>
   </div>
 </template>
 
@@ -73,6 +114,9 @@ export default {
   methods: {
     handleCheckSellerDetailClick: function() {
       this.showSellerInfo = true;
+    },
+    handleCloseBtnClick: function() {
+      this.showSellerInfo = false;
     }
   }
 };
@@ -173,7 +217,7 @@ export default {
       padding: 7px 8px;
       padding-left: 16px;
       border-radius: 16px;
-      .cursor();
+      outline: none;
 
       .length {
         font-size: 10px;
@@ -231,22 +275,116 @@ export default {
     left: 0;
     top: 0;
     .size(100%);
-    background: rgba(7, 17, 27, 0.8);
+    padding-top: 64px;
     padding-bottom: 64px;
-    overflow: hidden;
+    box-sizing: border-box;
+    background: rgba(7, 17, 27, 0.8);
+    transition: opacity 0.5s;
 
-    .title {
-      color: @whiteColor;
+    &.fade-enter-active,
+    &.fade-leave-active {
+      opacity: 1;
+      background: rgba(7, 17, 27, 0.8);
+    }
+    &.fade-enter, &.fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+      opacity: 0;
+      background: rgba(7, 17, 27, 0);
     }
 
-    .close-btn {
-      color: @whiteColor;
-      font-size: 32px;
-      z-index: 1;
+    .info-wrap {
+      .title {
+        color: @whiteColor;
+        text-align: center;
+        font-size: 16px;
+        font-weight: 700;
+        .h-lh(16px);
+      }
+
+      .star-view-wrap {
+        .flex();
+        justify-content: center;
+        margin-top: 16px;
+      }
+
+      .part {
+        .title {
+          width: 80%;
+          margin: auto;
+          margin-top: 28px;
+          margin-bottom: 24px;
+          display: flex;
+          .line {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            flex: 1;
+            position: relative;
+            top: -7px;
+          }
+          .text {
+            color: @whiteColor;
+            padding: 0 12px;
+          }
+        }
+        .content {
+          padding-left: 48px;
+          padding-right: 48px;
+          color: @whiteColor;
+
+          .li-content {
+            font-size: 0;
+            .flex();
+            margin-bottom: 12px;
+            .activity-brand {
+              display: inline-block;
+              .size(16px);
+              background-size: 12px 12px;
+              vertical-align: top;
+              margin-right: 12px;
+
+              &.decrease {
+                .bg-image("../res/header/decrease_1");
+              }
+              &.discount {
+                .bg-image("../res/header/discount_1");
+              }
+              &.guarantee {
+                .bg-image("../res/header/guarantee_1");
+              }
+              &.invoice {
+                .bg-image("../res/header/invoice_1");
+              }
+              &.special {
+                .bg-image("../res/header/special_1");
+              }
+            }
+            .description {
+              font-size: 12px;
+              color: @whiteColor;
+              .h-lh(12px);
+            }
+          }
+
+          &.bulletin {
+            font-size: 12px;
+            .h-lh(24px);
+          }
+        }
+      }
+    }
+
+    .close-wrap {
+      .size(100%, 64px);
       position: absolute;
+      left: 0;
       bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
+      .flex();
+      justify-content: center;
+      align-items: flex-start;
+
+      .close-btn {
+        color: @whiteColor;
+        font-size: 32px;
+        z-index: 1;
+      }
     }
   }
 }
