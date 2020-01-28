@@ -3,7 +3,14 @@
 </template>
 
 <script>
-export default {};
+export default {
+  created: function() {
+    this.$http.get("/api/ratings").then(res => {
+      const ratingsData = res.body.ratings;
+      console.log("ratings-->", ratingsData);
+    });
+  }
+};
 </script>
 
 <style></style>

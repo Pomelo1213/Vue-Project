@@ -28,14 +28,6 @@ export default {
       console.log("seller-->", sellerData);
       this.sellerData = sellerData;
     });
-    this.$http.get("/api/goods").then(res => {
-      const goodsData = res.body.goods;
-      console.log("good-->", goodsData);
-    });
-    this.$http.get("/api/ratings").then(res => {
-      const ratingsData = res.body.ratings;
-      console.log("ratings-->", ratingsData);
-    });
   }
 };
 </script>
@@ -45,11 +37,10 @@ export default {
 .tab-bar {
   .flex();
   height: 40px;
-  .border(#333);
+  border-bottom: 1px solid rgba(7, 17, 27, 0.1);
 
   > a {
     flex: 1;
-    .cursor();
     .flex();
     justify-content: center;
     align-items: center;
@@ -57,11 +48,7 @@ export default {
     font-size: 14px;
     .h-lh(40px);
 
-    &:hover {
-      background: orange;
-    }
-
-    &.router-active {
+    &.link-active {
       color: rgb(240, 20, 20);
     }
   }

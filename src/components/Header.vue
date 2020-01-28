@@ -12,10 +12,14 @@
           {{ seller.description }} / {{ seller.deliveryTime }}分钟送达
         </div>
         <div class="cheap" v-if="seller.supports">
-          <span
+          <!-- <span
             class="activity-brand"
             :class="activityClassMp[seller.supports[0].type]"
-          ></span>
+          ></span> -->
+          <v-brand
+            :brandType="seller.supports[0].type"
+            :brandSize="12"
+          ></v-brand>
           <span class="cheap-name">
             {{ seller.supports[0].description }}
           </span>
@@ -56,10 +60,10 @@
                 v-for="(item, index) in seller.supports"
                 :key="index"
               >
-                <span
-                  class="activity-brand"
-                  :class="activityClassMp[seller.supports[index].type]"
-                ></span>
+                <v-brand
+                  :brandType="seller.supports[index].type"
+                  :brandSize="16"
+                ></v-brand>
                 <span class="description">{{
                   seller.supports[index].description
                 }}</span>
@@ -88,6 +92,7 @@
 
 <script>
 import Star from "./Star.vue";
+import ActivityBrand from "./ActivityBrand.vue";
 export default {
   props: {
     seller: {
@@ -95,7 +100,8 @@ export default {
     }
   },
   components: {
-    "v-star": Star
+    "v-star": Star,
+    "v-brand": ActivityBrand
   },
   created: function() {
     this.activityClassMp = [
@@ -122,11 +128,12 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 @import "../assets/global.less";
 .header {
   position: relative;
   background-color: rgba(7, 17, 27, 0.5);
+  overflow: hidden;
 
   .header-bg {
     .size(100%);
@@ -180,27 +187,7 @@ export default {
         font-size: 0;
 
         .activity-brand {
-          display: inline-block;
-          .size(12px);
-          background-size: 12px 12px;
-          vertical-align: top;
           margin-right: 4px;
-
-          &.decrease {
-            .bg-image("../res/header/decrease_1");
-          }
-          &.discount {
-            .bg-image("../res/header/discount_1");
-          }
-          &.guarantee {
-            .bg-image("../res/header/guarantee_1");
-          }
-          &.invoice {
-            .bg-image("../res/header/invoice_1");
-          }
-          &.special {
-            .bg-image("../res/header/special_1");
-          }
         }
 
         .cheap-name {
@@ -278,7 +265,7 @@ export default {
     padding-top: 64px;
     padding-bottom: 64px;
     box-sizing: border-box;
-    background: rgba(7, 17, 27, 0.8);
+    background: rgba(139, 151, 163, 0.8);
     transition: opacity 0.5s;
 
     &.fade-enter-active,
@@ -333,29 +320,11 @@ export default {
             font-size: 0;
             .flex();
             margin-bottom: 12px;
-            .activity-brand {
-              display: inline-block;
-              .size(16px);
-              background-size: 12px 12px;
-              vertical-align: top;
-              margin-right: 12px;
 
-              &.decrease {
-                .bg-image("../res/header/decrease_1");
-              }
-              &.discount {
-                .bg-image("../res/header/discount_1");
-              }
-              &.guarantee {
-                .bg-image("../res/header/guarantee_1");
-              }
-              &.invoice {
-                .bg-image("../res/header/invoice_1");
-              }
-              &.special {
-                .bg-image("../res/header/special_1");
-              }
+            .activity-brand {
+              margin-right: 12px;
             }
+
             .description {
               font-size: 12px;
               color: @whiteColor;
