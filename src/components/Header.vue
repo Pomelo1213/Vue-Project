@@ -265,8 +265,9 @@ export default {
     padding-top: 64px;
     padding-bottom: 64px;
     box-sizing: border-box;
-    background: rgba(139, 151, 163, 0.8);
+    background: rgba(7, 17, 27, 0.8);
     transition: opacity 0.5s;
+    z-index: 1;
 
     &.fade-enter-active,
     &.fade-leave-active {

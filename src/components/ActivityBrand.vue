@@ -1,7 +1,11 @@
 <template>
   <span
     class="activity-brand"
-    :class="[`${currentType}`, `${currentSize}`]"
+    :class="[
+      `${currentType}`,
+      `${currentSize}`,
+      `${isHollow ? 'hollow' : 'not-hollow'}`
+    ]"
   ></span>
 </template>
 
@@ -13,6 +17,10 @@ export default {
     },
     brandSize: {
       type: Number
+    },
+    isHollow: {
+      type: Boolean,
+      default: true
     }
   },
   data: function() {
@@ -23,8 +31,7 @@ export default {
   computed: {
     currentType: function() {
       const currentType = this.brand[this.brandType];
-      console.log("--->", currentType);
-      return currentType;
+      return currentType || "";
     },
     currentSize: function() {
       return `size-${this.brandSize}`;
@@ -43,56 +50,112 @@ export default {
     &.size-12 {
       .size(12px);
       background-size: 12px 12px;
+      &.hollow {
+        .bg-image("../res/activity-brand/decrease_1");
+      }
+      &.not-hollow {
+        .bg-image("../res/activity-brand/decrease_3");
+      }
     }
     &.size-16 {
       .size(16px);
       background-size: 16px 16px;
+      &.hollow {
+        .bg-image("../res/activity-brand/decrease_2");
+      }
+      &.not-hollow {
+        .bg-image("../res/activity-brand/decrease_4");
+      }
     }
-    .bg-image("../res/header/decrease_1");
   }
   &.discount {
     &.size-12 {
       .size(12px);
       background-size: 12px 12px;
+      &.hollow {
+        .bg-image("../res/activity-brand/discount_1");
+      }
+      &.not-hollow {
+        .bg-image("../res/activity-brand/discount_3");
+      }
     }
     &.size-16 {
       .size(16px);
       background-size: 16px 16px;
+      &.hollow {
+        .bg-image("../res/activity-brand/discount_2");
+      }
+      &.not-hollow {
+        .bg-image("../res/activity-brand/discount_4");
+      }
     }
-    .bg-image("../res/header/discount_1");
   }
   &.guarantee {
     &.size-12 {
       .size(12px);
       background-size: 12px 12px;
+      &.hollow {
+        .bg-image("../res/activity-brand/guarantee_1");
+      }
+      &.not-hollow {
+        .bg-image("../res/activity-brand/guarantee_3");
+      }
     }
     &.size-16 {
       .size(16px);
       background-size: 16px 16px;
+      &.hollow {
+        .bg-image("../res/activity-brand/guarantee_2");
+      }
+      &.not-hollow {
+        .bg-image("../res/activity-brand/guarantee_4");
+      }
     }
-    .bg-image("../res/header/guarantee_1");
   }
   &.invoice {
     &.size-12 {
       .size(12px);
       background-size: 12px 12px;
+      &.hollow {
+        .bg-image("../res/activity-brand/invoice_1");
+      }
+      &.not-hollow {
+        .bg-image("../res/activity-brand/invoice_3");
+      }
     }
     &.size-16 {
       .size(16px);
       background-size: 16px 16px;
+      &.hollow {
+        .bg-image("../res/activity-brand/invoice_2");
+      }
+      &.not-hollow {
+        .bg-image("../res/activity-brand/invoice_4");
+      }
     }
-    .bg-image("../res/header/invoice_1");
   }
   &.special {
     &.size-12 {
       .size(12px);
       background-size: 12px 12px;
+      &.hollow {
+        .bg-image("../res/activity-brand/special_1");
+      }
+      &.not-hollow {
+        .bg-image("../res/activity-brand/special_3");
+      }
     }
     &.size-16 {
       .size(16px);
       background-size: 16px 16px;
+      &.hollow {
+        .bg-image("../res/activity-brand/special_2");
+      }
+      &.not-hollow {
+        .bg-image("../res/activity-brand/special_4");
+      }
     }
-    .bg-image("../res/header/special_1");
+    .bg-image("../res/activity-brand/special_1");
   }
 }
 </style>
