@@ -40,22 +40,43 @@
                   <span>月售{{ food.sellCount }}份</span>
                   <span>好评率{{ food.rating }}%</span>
                 </div>
+                <div class="price">
+                  <span class="new">¥{{ food.price }}</span>
+                  <span class="old" v-if="food.oldPrice"
+                    >¥{{ food.oldPrice }}</span
+                  >
+                </div>
               </div>
+              <v-cart-control :food="food"></v-cart-control>
             </li>
           </ul>
         </li>
       </ul>
     </div>
+    <v-shop-cart
+      :goods="goodsData"
+      :minPrice="seller.minPrice"
+      :deliveryPrice="seller.deliveryPrice"
+    ></v-shop-cart>
   </div>
 </template>
 
 <script>
 import BetterScroll from "better-scroll";
 import ActivityBrand from "./ActivityBrand.vue";
+import ShopCart from "./ShopCart.vue";
+import CartControl from "./CartControl.vue";
 
 export default {
+  props: {
+    seller: {
+      type: Object
+    }
+  },
   components: {
-    "v-brand": ActivityBrand
+    "v-brand": ActivityBrand,
+    "v-shop-cart": ShopCart,
+    "v-cart-control": CartControl
   },
   data: function() {
     return {
@@ -238,6 +259,7 @@ export default {
               margin-right: 10px;
               border-radius: 2px;
             }
+
             .info {
               .name {
                 font-size: 14px;
@@ -261,6 +283,31 @@ export default {
                   margin-left: 12px;
                 }
               }
+              .price {
+                margin-top: 8px;
+                display: flex;
+
+                .new {
+                  font-size: 12px;
+                  .h-lh(12px);
+                  font-weight: 700;
+                  color: #dd3023;
+                  margin-right: 5px;
+                }
+                .old {
+                  font-size: 10px;
+                  .h-lh(10px);
+                  font-weight: 700px;
+                  color: rgb(133, 139, 146);
+                  text-decoration: line-through;
+                }
+              }
+            }
+
+            .cart-control {
+              position: absolute;
+              right: 16px;
+              bottom: 9px;
             }
           }
         }

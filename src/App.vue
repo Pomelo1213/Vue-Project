@@ -6,7 +6,7 @@
       <router-link to="/ratings">评价</router-link>
       <router-link to="/saler">商家</router-link>
     </ul>
-    <router-view />
+    <router-view :seller="sellerData" />
   </div>
 </template>
 
@@ -36,6 +36,8 @@ export default {
 @import "./assets/global.less";
 .tab-bar {
   .flex();
+  position: relative;
+  z-index: 2;
   height: 40px;
   border-bottom: 1px solid rgba(7, 17, 27, 0.1);
 
