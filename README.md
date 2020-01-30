@@ -1,6 +1,4 @@
-# lx-h5-saler-vue-app-project
-
-> Vue project
+# Vue project
 
 ## NOTE
 
