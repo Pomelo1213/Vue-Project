@@ -57,7 +57,9 @@ export default {
   },
   created: function() {
     // 默认选中
-    this.$emit("select", this.ratings);
+    this.$watch("ratings", () => {
+      this.$emit("select", this.ratings);
+    });
   },
   computed: {
     recRatingsNum: function() {

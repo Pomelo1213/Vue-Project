@@ -267,7 +267,7 @@ export default {
     box-sizing: border-box;
     background: rgba(7, 17, 27, 0.8);
     transition: opacity 0.5s;
-    z-index: 1;
+    z-index: 11;
 
     &.fade-enter-active,
     &.fade-leave-active {
