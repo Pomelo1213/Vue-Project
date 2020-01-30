@@ -31,6 +31,7 @@
               class="food-li"
               v-for="food in good.foods"
               :key="`food-${food.name}`"
+              @click="handleFoodClick(food)"
             >
               <img class="food-image" :src="food.image" />
               <div class="info">
@@ -58,6 +59,9 @@
       :minPrice="seller.minPrice"
       :deliveryPrice="seller.deliveryPrice"
     ></v-shop-cart>
+    <div v-if="showFoodDetail">
+      <v-food-detail :food="selectFood"></v-food-detail>
+    </div>
   </div>
 </template>
 
@@ -66,6 +70,7 @@ import BetterScroll from "better-scroll";
 import ActivityBrand from "./ActivityBrand.vue";
 import ShopCart from "./ShopCart.vue";
 import CartControl from "./CartControl.vue";
+import FoodDetail from "./FoodDetail.vue";
 
 export default {
   props: {
@@ -76,13 +81,16 @@ export default {
   components: {
     "v-brand": ActivityBrand,
     "v-shop-cart": ShopCart,
-    "v-cart-control": CartControl
+    "v-cart-control": CartControl,
+    "v-food-detail": FoodDetail
   },
   data: function() {
     return {
       goodsData: [],
       scrollTopList: [],
-      scrollY: 0
+      scrollY: 0,
+      showFoodDetail: false,
+      selectFood: {}
     };
   },
   computed: {
@@ -140,6 +148,10 @@ export default {
       );
       const currentEl = listEls[index];
       this.goodsScroll.scrollToElement(currentEl, 300);
+    },
+    handleFoodClick: function(food) {
+      this.showFoodDetail = true;
+      this.selectFood = food;
     }
   }
 };

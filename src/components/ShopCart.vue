@@ -1,32 +1,62 @@
 <template>
   <div class="shop-cart">
-    <div class="icon-wrap">
-      <span
-        class="icon-shopping_cart"
-        :class="totalCount > 0 ? 'active' : ''"
-      ></span>
-      <span class="goods-count" v-if="totalCount > 0">{{
-        totalCount > 99 ? 99 : totalCount
-      }}</span>
-    </div>
-    <div class="price-wrap">
-      <div class="total-money">
-        <span v-if="totalMoney === 0">¥0</span>
-        <span v-else class="money">¥{{ totalMoney }}</span>
+    <div class="shop-cart-inner">
+      <div class="icon-wrap" @click="handleShopCartClick">
+        <span
+          class="icon-shopping_cart"
+          :class="totalCount > 0 ? 'active' : ''"
+        ></span>
+        <span class="goods-count" v-if="totalCount > 0">{{
+          totalCount > 99 ? 99 : totalCount
+        }}</span>
       </div>
-      <div class="delivery-money">另需配送费¥{{ deliveryPrice }}元</div>
-    </div>
-    <div class="purchase-btn" :class="totalMoney >= minPrice ? 'purchase' : ''">
-      <span v-if="totalMoney === 0">¥{{ minPrice }}元起送</span>
-      <span v-else-if="totalMoney > 0 && totalMoney < minPrice"
-        >还差¥{{ minPrice - totalMoney }}元起送</span
+      <div class="price-wrap">
+        <div class="total-money">
+          <span v-if="totalMoney === 0">¥0</span>
+          <span v-else class="money">¥{{ totalMoney }}</span>
+        </div>
+        <div class="delivery-money">另需配送费¥{{ deliveryPrice }}元</div>
+      </div>
+      <div
+        class="purchase-btn"
+        :class="totalMoney >= minPrice ? 'purchase' : ''"
       >
-      <span v-else>立即结算</span>
+        <span v-if="totalMoney === 0">¥{{ minPrice }}元起送</span>
+        <span v-else-if="totalMoney > 0 && totalMoney < minPrice"
+          >还差¥{{ minPrice - totalMoney }}元起送</span
+        >
+        <span v-else>立即结算</span>
+      </div>
+      <div v-if="showCartCard" class="shop-cart-card">
+        <div class="inner">
+          <div class="cart-header">
+            <span class="cart">购物车</span>
+            <span class="clear" @click="handleClearBtnClick">清空</span>
+          </div>
+          <div class="cart-content-wrap" ref="cartContent">
+            <ul class="cart-content">
+              <li
+                class="cart-li"
+                v-for="food in shopCartFoods"
+                :key="food.name"
+              >
+                <div class="food-name">{{ food.name }}</div>
+                <div class="control-wrap">
+                  <span class="food-price">{{ food.price }}</span>
+                  <v-cart-control :food="food"></v-cart-control>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import BetterScroll from "better-scroll";
+import CartControl from "./CartControl.vue";
 export default {
   props: {
     deliveryPrice: {
@@ -39,8 +69,20 @@ export default {
       type: Array
     }
   },
+  components: {
+    "v-cart-control": CartControl
+  },
   data: function() {
-    return {};
+    return {
+      showCartCard: false
+    };
+  },
+  mounted: function() {
+    this.$watch("showCartCard", () => {
+      this.$nextTick(() => {
+        this._initScroll();
+      });
+    });
   },
   computed: {
     totalCount: function() {
@@ -60,6 +102,41 @@ export default {
         return prev + eachPrice;
       }, 0);
       return totalMoney;
+    },
+    shopCartFoods: function() {
+      const foods = [];
+      this.goods.forEach(good => {
+        good.foods.forEach(food => {
+          if (food.count && food.count > 0) {
+            foods.push(food);
+          }
+        });
+      });
+      return foods;
+    }
+  },
+  methods: {
+    handleShopCartClick: function() {
+      this.showCartCard = !this.showCartCard;
+    },
+    handleClearBtnClick: function() {
+      this.goods.forEach(good => {
+        good.foods.forEach(food => {
+          if (food.count) {
+            food.count = 0;
+          }
+        });
+      });
+    },
+    // 下划线代表 private 方法，（编写规范而已）
+    _initScroll: function() {
+      if (this.cartContentScroll) {
+        this.cartContentScroll.refresh();
+      } else {
+        this.cartContentScroll = new BetterScroll(this.$refs.cartContent, {
+          click: true
+        });
+      }
     }
   }
 };
@@ -73,9 +150,13 @@ export default {
   bottom: -47px;
   left: 0;
   right: 0;
-  z-index: 2;
-  background-color: #141d27;
-  .flex();
+  z-index: 10;
+
+  .shop-cart-inner {
+    .size(100%, 100%);
+    .flex();
+    background-color: #141d27;
+  }
 
   .icon-wrap {
     border-radius: 50%;
@@ -116,6 +197,7 @@ export default {
     padding-left: 18px;
     padding-right: 12px;
     height: 100%;
+    background-color: #141d27;
     .flex();
 
     .total-money {
@@ -161,6 +243,76 @@ export default {
     &.purchase {
       color: @whiteColor;
       background-color: #24be48;
+    }
+  }
+
+  .shop-cart-card {
+    position: fixed;
+    .size(100%, 100%);
+    top: 0;
+    left: 0;
+    z-index: -10;
+    background-color: rgba(7, 17, 27, 0.6);
+
+    .inner {
+      padding-bottom: 52px;
+      position: absolute;
+      width: 100%;
+      height: 305px;
+      bottom: 0;
+      left: 0;
+      background: @whiteColor;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+
+      .cart-header {
+        padding: 0 18px;
+        font-size: 14px;
+        font-weight: 200;
+        .h-lh(40px);
+        .flex();
+        justify-content: space-between;
+        background-color: #f3f5f7;
+        border-bottom: 1px solid rgba(7, 17, 27, 0.1);
+
+        .clear {
+          font-size: 12px;
+          color: rgb(0, 160, 220);
+        }
+      }
+
+      .cart-content-wrap {
+        flex: 1;
+        overflow: hidden;
+        .cart-content {
+          padding: 0 18px;
+
+          .cart-li {
+            .flex();
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(7, 17, 27, 0.1);
+            .food-name {
+              font-size: 14px;
+              color: rgb(7, 17, 27);
+              .h-lh(24px);
+            }
+
+            .control-wrap {
+              .flex();
+
+              > .food-price {
+                margin-right: 12px;
+                font-size: 14px;
+                color: rgb(240, 20, 20);
+                .h-lh(24px);
+                font-weight: 700;
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

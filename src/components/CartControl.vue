@@ -20,6 +20,9 @@ export default {
   data: function() {
     return {};
   },
+  created: function() {
+    // console.log("--->", this.food);
+  },
   methods: {
     handleRemoveFoodClick: function() {
       this.food.count--;
