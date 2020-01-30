@@ -1,7 +1,29 @@
 <template>
-  <div class="ratings">
+  <div class="ratings" ref="ratings">
     <div class="inner">
-      <div class="ratings-header"></div>
+      <div class="ratings-header">
+        <div class="left-part">
+          <div class="seller-score">{{ seller.score }}</div>
+          <div class="graph">综合评分</div>
+          <div class="rank-rate">高于周边商家{{ seller.rankRate }}%</div>
+        </div>
+        <div class="right-part">
+          <div class="service-score">
+            <span>服务态度</span>
+            <v-star :classType="36" :score="seller.serviceScore"></v-star>
+            <span>{{ seller.serviceScore }}</span>
+          </div>
+          <div class="food-score">
+            <span>美味程度</span>
+            <v-star :classType="36" :score="seller.foodScore"></v-star>
+            <span>{{ seller.foodScore }}</span>
+          </div>
+          <div class="delivery-time">
+            <span>送达时间</span>
+            <span>{{ seller.deliveryTime }}分钟</span>
+          </div>
+        </div>
+      </div>
       <v-split></v-split>
       <v-rating-select
         :recText="'满意'"
@@ -46,11 +68,16 @@
 </template>
 
 <script>
+import BetterScroll from "better-scroll";
 import Star from "./Star.vue";
 import RatingSelect from "./RatingSelect.vue";
 import Split from "./Split.vue";
 export default {
-  props: {},
+  props: {
+    seller: {
+      type: Object
+    }
+  },
   data: function() {
     return {
       ratings: [],
@@ -66,12 +93,23 @@ export default {
     this.$http.get("/api/ratings").then(res => {
       const ratingsData = res.body.ratings;
       this.ratings = ratingsData;
+      this.$nextTick(() => {
+        this._initScroll();
+      });
     });
   },
   methods: {
     handleSelectClick: function(ratings) {
-      console.log("ratings-->", ratings);
       this.selectRatings = ratings;
+    },
+    _initScroll: function() {
+      if (!this.ratingScroll) {
+        this.ratingScroll = new BetterScroll(this.$refs.ratings, {
+          click: true
+        });
+      } else {
+        this.ratingScroll.refresh();
+      }
     }
   }
 };
@@ -85,8 +123,91 @@ export default {
   left: 0;
   top: 174px;
   bottom: 0;
+  overflow: hidden;
   .inner {
-    .rating-header {
+    .ratings-header {
+      .flex();
+      .left-part {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 18px 24px;
+        position: relative;
+
+        &::after {
+          position: absolute;
+          display: block;
+          width: 1px;
+          height: calc(100% - 36px);
+          content: "";
+          top: 50%;
+          transform: translateY(-50%);
+          right: 0;
+          background-color: rgba(7, 17, 27, 0.1);
+        }
+
+        .seller-score {
+          font-size: 24px;
+          color: #f19d38;
+
+          .h-lh(28px);
+        }
+        .graph {
+          margin-top: 6px;
+          font-size: 12px;
+          color: rgb(7, 17, 27);
+          .h-lh(12px);
+        }
+        .rank-rate {
+          margin-top: 8px;
+          font-size: 10px;
+          color: rgba(7, 17, 27, 0.5);
+          .h-lh(10px);
+        }
+      }
+      .right-part {
+        padding: 18px 24px;
+        .service-score,
+        .food-score,
+        .delivery-time {
+          .flex();
+
+          > span:first-child {
+            color: rgb(7, 17, 27);
+            font-size: 12px;
+            .h-lh(18px);
+            margin-right: 6px;
+          }
+        }
+
+        .service-score {
+          > span:last-child {
+            color: #f19d38;
+            font-size: 12px;
+            margin-left: 6px;
+          }
+        }
+
+        .food-score {
+          margin-top: 8px;
+          > span:last-child {
+            color: #f19d38;
+            font-size: 12px;
+            margin-left: 6px;
+          }
+        }
+
+        .delivery-time {
+          margin-top: 8px;
+
+          > span:last-child {
+            font-size: 12px;
+            color: rgb(147, 153, 159);
+            .h-lh(18px);
+          }
+        }
+      }
     }
 
     .rating-list {
@@ -95,6 +216,7 @@ export default {
       .rating-li {
         width: 100%;
         padding: 18px;
+        box-sizing: border-box;
         position: relative;
 
         &::after {
