@@ -14,10 +14,12 @@
           <span v-if="food.oldPrice" class="old">¥{{ food.oldPrice }}</span>
         </div>
         <div class="add-btn-wrap">
-          <div v-if="showCartControl">
-            <v-cart-control></v-cart-control>
+          <div v-if="showCartControl && this.food.count > 0">
+            <v-cart-control :food="food"></v-cart-control>
           </div>
-          <div class="add-btn" v-else>加入购物车</div>
+          <div class="add-btn" v-else @click="handleAddCartClick">
+            加入购物车
+          </div>
         </div>
       </div>
       <v-split></v-split>
@@ -104,6 +106,14 @@ export default {
     },
     handleReturnClick: function() {
       this.$emit("close");
+    },
+    handleAddCartClick: function() {
+      this.showCartControl = true;
+      if (this.food.count) {
+        this.foodCount++;
+      } else {
+        this.$set(this.food, "count", 1);
+      }
     }
   }
 };
