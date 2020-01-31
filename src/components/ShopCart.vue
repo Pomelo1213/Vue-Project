@@ -27,8 +27,12 @@
         >
         <span v-else>立即结算</span>
       </div>
-      <div v-if="showCartCard" class="shop-cart-card">
-        <div class="inner">
+      <div
+        v-if="showCartCard"
+        class="shop-cart-card"
+        @click="handleShopCartCardClick"
+      >
+        <div class="inner" @click.stop="handleInnerCilck">
           <div class="cart-header">
             <span class="cart">购物车</span>
             <span class="clear" @click="handleClearBtnClick">清空</span>
@@ -128,6 +132,7 @@ export default {
         });
       });
     },
+
     // 下划线代表 private 方法，（编写规范而已）
     _initScroll: function() {
       if (this.cartContentScroll) {
@@ -137,6 +142,12 @@ export default {
           click: true
         });
       }
+    },
+    handleShopCartCardClick: function() {
+      this.showCartCard = !this.showCartCard;
+    },
+    handleInnerCilck: function() {
+      // do nothings,just to stop Propagation
     }
   }
 };

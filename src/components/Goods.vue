@@ -60,7 +60,10 @@
       :deliveryPrice="seller.deliveryPrice"
     ></v-shop-cart>
     <div v-if="showFoodDetail">
-      <v-food-detail :food="selectFood"></v-food-detail>
+      <v-food-detail
+        :food="selectFood"
+        v-on:close="handleCloseFoodDetailClick"
+      ></v-food-detail>
     </div>
   </div>
 </template>
@@ -152,6 +155,9 @@ export default {
     handleFoodClick: function(food) {
       this.showFoodDetail = true;
       this.selectFood = food;
+    },
+    handleCloseFoodDetailClick: function() {
+      this.showFoodDetail = false;
     }
   }
 };

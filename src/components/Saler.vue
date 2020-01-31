@@ -151,6 +151,7 @@ export default {
         justify-content: space-between;
         padding: 18px;
         position: relative;
+        box-sizing: border-box;
         &::after {
           width: calc(100% - 36px);
           height: 1px;
@@ -170,6 +171,7 @@ export default {
           }
           .seller-score {
             margin-top: 8px;
+            display: flex;
             .num {
               margin-left: 8px;
               color: rgb(77, 85, 93);

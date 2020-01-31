@@ -1,5 +1,5 @@
 <template>
-  <div class="cart-control">
+  <div class="cart-control" @click.stop="handleCartControlClick">
     <span
       v-if="food.count > 0"
       class="icon-remove_circle_outline"
@@ -38,6 +38,9 @@ export default {
         return;
       }
       this.food.count++;
+    },
+    handleCartControlClick: function() {
+      // do nothings, just stop Propagation
     }
   }
 };

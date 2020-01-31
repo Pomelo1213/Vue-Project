@@ -1,6 +1,7 @@
 <template>
   <div class="food-detail" ref="foodDetail">
     <div class="inner">
+      <span class="icon-arrow_lift" @click="handleReturnClick"></span>
       <img class="food-image" :src="food.icon" />
       <div class="detail-header">
         <div class="name">{{ food.name }}</div>
@@ -97,10 +98,12 @@ export default {
         this.foodDetailScroll = new BetterScroll(this.$refs.foodDetail, {
           click: true
         });
-        console.log("???", this.foodDetailScroll);
       } else {
         this.foodDetailScroll.refresh();
       }
+    },
+    handleReturnClick: function() {
+      this.$emit("close");
     }
   }
 };
@@ -122,6 +125,16 @@ export default {
 
   .inner {
     width: 100%;
+    position: relative;
+
+    .icon-arrow_lift {
+      position: absolute;
+      left: 18px;
+      top: 15px;
+      z-index: 10;
+      font-size: 16px;
+      color: @whiteColor;
+    }
 
     .food-image {
       width: 100%;
